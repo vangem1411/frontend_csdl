@@ -8,7 +8,7 @@ import Website from '../pages/websites/WebsiteManager.vue'
 import Device from '../pages/devices/DeviceManager.vue'
 import Vulnerability from '../pages/vulnerabilitys/VulnerabilityManager.vue'
 import Statistics from '../pages/statistics/Statistics.vue'
-
+import VulnerabilityAlerts from '../pages/vulnerabilityAlerts/VulnerabilityAlerts.vue'
 
 const routes = [
   {
@@ -64,6 +64,14 @@ const routes = [
         component: Statistics,
         meta: { roles: ['super_admin', 'staff'] }
       },
+    
+{
+  path: '/VulnerabilityAlerts',
+  name: 'VulnerabilityAlerts',
+  component: VulnerabilityAlerts,
+  meta: { requiresAuth: true }
+},
+
       {
         path: '403',
         name: 'forbidden',

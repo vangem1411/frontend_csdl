@@ -34,7 +34,7 @@
               </router-link>
             </li>
               <li v-if="userRole !== 'staff'">
-              <router-link to="/statistics">
+              <router-link to="/VulnerabilityAlerts">
                 <i class="fa fa fa-bell"></i> Cảnh báo
               </router-link>
             </li>

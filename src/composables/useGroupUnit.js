@@ -12,7 +12,7 @@ export function useGroupUnit() {
       const response = await api.get(`${API_BASE_URL}/${id}`);
       selectedGroupUnit.value = response.data; // Cập nhật ref selectedGroupUnit
     } catch (error) {
-      console.error('Lỗi khi lấy thông tin người dùng:', error);
+      console.error('Lỗi khi lấy thông tin nhóm địa bàn:', error);
       selectedGroupUnit.value = null; // Reset nếu có lỗi
       throw error; // Ném lỗi để component gọi có thể bắt
     }
@@ -23,7 +23,7 @@ export function useGroupUnit() {
       const response = await api.post(API_BASE_URL, unitData);
       return response.data;
     } catch (error) {
-      console.error('Lỗi khi tạo người dùng:', error);
+      console.error('Lỗi khi tạo nhóm địa bàn:', error);
       throw error;
     }
   };
@@ -44,7 +44,7 @@ export function useGroupUnit() {
       const response = await api.put(`${API_BASE_URL}/${id}`, unitData);
       return response.data;
     } catch (error) {
-      console.error('Lỗi khi cập nhật người dùng:', error);
+      console.error('Lỗi khi cập nhật nhóm địa bàn:', error);
       throw error;
     }
   };
