@@ -17,9 +17,15 @@
     <div class="row g-3">
       <div class="col-12 col-sm-6 col-lg-3" v-for="t in tiles" :key="t.key">
         <div class="tile-stats pretty" :class="t.class">
-          <div class="icon"><i :class="t.icon"></i></div>
-          <div class="count"><span :ref="el => setCountRef(t.key, el)" class="skeleton block"></span></div>
-          <h3>{{ t.label }}</h3>
+          <div class="tile-inner">
+            <div class="count">
+              <span :ref="el => setCountRef(t.key, el)" class="skeleton block"></span>
+            </div>
+            <h3>{{ t.label }}</h3>
+          </div>
+          <div class="icon-wrap" aria-hidden="true">
+            <i :class="t.icon"></i>
+          </div>
         </div>
       </div>
     </div>
@@ -39,11 +45,31 @@
                 <canvas ref="sevCanvas" height="200"></canvas>
               </div>
               <div class="col-5">
-                <ul class="legend list-unstyled m-0">
-                  <li><span class="dot dot-low"></span> Thấp <b>{{ sevCounts.low.toLocaleString('vi-VN') }}</b> <span class="pct" v-if="sumSev">({{ pct(sevCounts.low, sumSev) }}%)</span></li>
-                  <li><span class="dot dot-medium"></span> Trung bình <b>{{ sevCounts.medium.toLocaleString('vi-VN') }}</b> <span class="pct" v-if="sumSev">({{ pct(sevCounts.medium, sumSev) }}%)</span></li>
-                  <li><span class="dot dot-high"></span> Cao <b>{{ sevCounts.high.toLocaleString('vi-VN') }}</b> <span class="pct" v-if="sumSev">{{ pct(sevCounts.high, sumSev) }}%</span></li>
-                  <li><span class="dot dot-critical"></span> Nghiêm trọng <b>{{ sevCounts.critical.toLocaleString('vi-VN') }}</b> <span class="pct" v-if="sumSev">{{ pct(sevCounts.critical, sumSev) }}%</span></li>
+                <ul class="legend legend-grid list-unstyled m-0">
+                  <li>
+                    <span class="dot dot-low"></span>
+                    <span class="lbl">Thấp</span>
+                    <b class="val">{{ sevCounts.low.toLocaleString('vi-VN') }}</b>
+                    <span class="pct" v-if="sumSev">({{ pct(sevCounts.low, sumSev) }}%)</span>
+                  </li>
+                  <li>
+                    <span class="dot dot-medium"></span>
+                    <span class="lbl">Trung bình</span>
+                    <b class="val">{{ sevCounts.medium.toLocaleString('vi-VN') }}</b>
+                    <span class="pct" v-if="sumSev">({{ pct(sevCounts.medium, sumSev) }}%)</span>
+                  </li>
+                  <li>
+                    <span class="dot dot-high"></span>
+                    <span class="lbl">Cao</span>
+                    <b class="val">{{ sevCounts.high.toLocaleString('vi-VN') }}</b>
+                    <span class="pct" v-if="sumSev">({{ pct(sevCounts.high, sumSev) }}%)</span>
+                  </li>
+                  <li>
+                    <span class="dot dot-critical"></span>
+                    <span class="lbl">Nghiêm trọng</span>
+                    <b class="val">{{ sevCounts.critical.toLocaleString('vi-VN') }}</b>
+                    <span class="pct" v-if="sumSev">({{ pct(sevCounts.critical, sumSev) }}%)</span>
+                  </li>
                 </ul>
                 <div v-if="sumSev===0" class="text-muted small mt-2">Chưa có dữ liệu phân bố.</div>
               </div>
@@ -65,10 +91,25 @@
                 <canvas ref="webCanvas" height="200"></canvas>
               </div>
               <div class="col-5">
-                <ul class="legend list-unstyled m-0">
-                  <li><span class="dot dot-web-active"></span> Đang hoạt động <b>{{ webCounts.active.toLocaleString('vi-VN') }}</b> <span class="pct" v-if="sumWeb">({{ pct(webCounts.active, sumWeb) }}%)</span></li>
-                  <li><span class="dot dot-web-suspect"></span> Nghi ngờ <b>{{ webCounts.suspect.toLocaleString('vi-VN') }}</b> <span class="pct" v-if="sumWeb">({{ pct(webCounts.suspect, sumWeb) }}%)</span></li>
-                  <li><span class="dot dot-web-down"></span> Ngừng hoạt động <b>{{ webCounts.down.toLocaleString('vi-VN') }}</b> <span class="pct" v-if="sumWeb">({{ pct(webCounts.down, sumWeb) }}%)</span></li>
+                <ul class="legend legend-grid list-unstyled m-0">
+                  <li>
+                    <span class="dot dot-web-active"></span>
+                    <span class="lbl">Đang hoạt động</span>
+                    <b class="val">{{ webCounts.active.toLocaleString('vi-VN') }}</b>
+                    <span class="pct" v-if="sumWeb">({{ pct(webCounts.active, sumWeb) }}%)</span>
+                  </li>
+                  <li>
+                    <span class="dot dot-web-suspect"></span>
+                    <span class="lbl">Nghi ngờ</span>
+                    <b class="val">{{ webCounts.suspect.toLocaleString('vi-VN') }}</b>
+                    <span class="pct" v-if="sumWeb">({{ pct(webCounts.suspect, sumWeb) }}%)</span>
+                  </li>
+                  <li>
+                    <span class="dot dot-web-down"></span>
+                    <span class="lbl">Ngừng hoạt động</span>
+                    <b class="val">{{ webCounts.down.toLocaleString('vi-VN') }}</b>
+                    <span class="pct" v-if="sumWeb">({{ pct(webCounts.down, sumWeb) }}%)</span>
+                  </li>
                 </ul>
                 <div v-if="sumWeb===0" class="text-muted small mt-2">Chưa có dữ liệu trạng thái.</div>
               </div>
@@ -92,7 +133,6 @@
       <div class="col-12 col-lg-4">
         <div class="card shadow-sm timeline-card">
           <div class="card-header bg-white fw-semibold">Dòng thời gian lỗ hổng</div>
-          <!-- SCROLLABLE -->
           <div class="timeline-scroll">
             <ul class="timeline list-unstyled m-0">
               <li v-for="(it, idx) in timeline" :key="idx" class="timeline-item">
@@ -415,24 +455,44 @@ onBeforeUnmount(() => {
 .refresh-btn{border:1px solid #e6e9ed}
 
 /* Tiles */
-.tile-stats{position:relative;background:#fff;border:1px solid #eceff3;border-radius:16px;padding:22px 22px 18px;box-shadow:0 8px 24px rgba(0,0,0,.06);transition:transform .15s ease, box-shadow .15s ease}
+.tile-stats{
+  position:relative;background:#fff;border:1px solid #eceff3;border-radius:16px;
+  padding:22px 22px 18px; padding-right:100px; /* chừa chỗ cho icon bên phải */
+  min-height:120px; box-shadow:0 8px 24px rgba(0,0,0,.06);
+  transition:transform .15s ease, box-shadow .15s ease
+}
 .tile-stats.pretty::before{content:"";position:absolute;inset:0;border-radius:16px;background:linear-gradient(135deg,rgba(255,255,255,.5),rgba(255,255,255,.2));z-index:0}
 .tile-stats:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.08)}
-.tile-stats .icon{position:absolute;right:18px;top:18px;font-size:36px;opacity:.17}
-.tile-stats .count{position:relative;z-index:1;font-size:34px;font-weight:800;line-height:1;margin:4px 0 6px;min-height:34px;letter-spacing:.3px}
-.tile-stats h3{position:relative;z-index:1;font-size:13px;margin:0;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
-.pretty-blue  .icon{color:#3b82f6}
-.pretty-amber .icon{color:#f59e0b}
-.pretty-red   .icon{color:#ef4444}
-.pretty-slate .icon{color:#334155}
+.tile-inner{position:relative;z-index:1}
+.tile-stats .count{font-size:34px;font-weight:800;line-height:1;margin:4px 0 6px;min-height:34px;letter-spacing:.3px}
+.tile-stats h3{font-size:13px;margin:0;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+
+/* icon giữa dọc, không đè nội dung */
+.icon-wrap{
+  position:absolute; right:18px; top:50%; transform:translateY(-50%);
+  width:64px; height:64px; display:flex; align-items:center; justify-content:center;
+  opacity:.16; z-index:0;
+}
+.icon-wrap i{font-size:56px; line-height:1}
+.pretty-blue  .icon-wrap{color:#3b82f6}
+.pretty-amber .icon-wrap{color:#f59e0b}
+.pretty-red   .icon-wrap{color:#ef4444}
+.pretty-slate .icon-wrap{color:#334155}
+
+/* Responsive: thu icon khi màn nhỏ */
+@media (max-width: 576px){
+  .tile-stats{padding-right:82px; min-height:110px}
+  .icon-wrap{width:56px;height:56px}
+  .icon-wrap i{font-size:48px}
+}
 
 /* Skeleton */
 .skeleton{background:linear-gradient(90deg,#f0f2f5 25%,#fafbfc 50%,#f0f2f5 75%);background-size:400% 100%;animation:skeleton 1.2s ease-in-out infinite}
 .block{display:inline-block;width:90px;height:30px;border-radius:8px}
 @keyframes skeleton{0%{background-position:100% 0}100%{background-position:0 0}}
 
-/* Donut legend */
-.legend li{display:flex;align-items:center;gap:.5rem;margin:.35rem 0;color:#555}
+/* Legend (thẳng hàng tuyệt đối bằng grid cố định cột) */
+.legend{color:#555}
 .legend .dot{display:inline-block;width:.8rem;height:.8rem;border-radius:50%}
 .legend .dot-low{background:#2ecc71}
 .legend .dot-medium{background:#f1c40f}
@@ -441,19 +501,23 @@ onBeforeUnmount(() => {
 .legend .dot-web-active{background:#3498db}
 .legend .dot-web-suspect{background:#f39c12}
 .legend .dot-web-down{background:#7f8c8d}
-.legend b{color:#111;margin-left:auto}
-.legend .pct{color:#6b7280;margin-left:.35rem}
+.legend-grid li{
+  display:grid;
+  grid-template-columns: 12px 1fr 64px 64px; /* dot | label | value | percent */
+  align-items:center;
+  gap:.5rem;
+  margin:.35rem 0;
+}
+.legend .lbl{white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.legend .val{color:#111;text-align:right}
+.legend .pct{color:#6b7280;text-align:right}
 
-/* Cards look */
+/* Cards */
 .card{border:1px solid #eceff3;border-radius:14px}
 
-/* Timeline styles + SCROLL */
+/* Timeline + scroll */
 .timeline-card{overflow:hidden}
-.timeline-scroll{
-  max-height: 420px;
-  overflow-y: auto;
-  padding-right: 8px;
-}
+.timeline-scroll{max-height:420px;overflow-y:auto;padding-right:8px}
 .timeline-scroll::-webkit-scrollbar{width:8px}
 .timeline-scroll::-webkit-scrollbar-track{background:transparent}
 .timeline-scroll::-webkit-scrollbar-thumb{background:#e5e7eb;border-radius:8px}
